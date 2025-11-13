@@ -1,5 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from perlin_noise import PerlinNoise
+
+def create_pnoise():
+  noise = PerlinNoise(octaves=4)
+  # Can eventually stack noise
+  
+  return noise
 
 def generate(map_size, biome="plains"):
   
@@ -14,8 +21,9 @@ def generate(map_size, biome="plains"):
   ]
 
 
-  # generate random values from 0 - 1 to use 
-  terrain = np.random.rand(map_size, map_size)
+  # generate random values according to perlin noise
+  noise = create_pnoise()
+  terrain = [[noise([i/map_size, j/map_size]) for j in range(map_size)] for i in range(map_size)]
 
   cmap = plt.cm.colors.LinearSegmentedColormap.from_list(
                                               "terrain_map", landmarks)
